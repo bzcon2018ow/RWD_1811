@@ -3272,6 +3272,9 @@ input, select, textarea {
 				#wrapper section > footer ul.actions {
 					justify-content: flex-end;
 				}
+				#wrapper section > footer ul.items * {
+					color: white;
+				}
 
 		#wrapper > section {
 			position: relative;
@@ -3570,6 +3573,9 @@ input, select, textarea {
 
 						#wrapper section > footer ul.actions {
 							justify-content: flex-start;
+						}
+						#wrapper section > footer ul.items * {
+							color: black;
 						}
 
 				#wrapper > section {
