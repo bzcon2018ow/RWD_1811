@@ -90,11 +90,14 @@
 					$gallery = $a.parents('.gallery'),
 					$modal = $gallery.children('.modal'),
 					$modalImg = $modal.find('img'),
+					$modaVideo  =  $modal.find("video"),
 					href = $a.attr('href');
 
 				// Not an image? Bail.
-					if (!href.match(/\.(jpg|gif|png|mp4)$/))
+					if($a.attr("videoId") == undefined){
+						if(!href.match(/\.(jpg|gif|png|mp4)$/) )
 						return;
+					}
 
 				// Prevent default.
 					event.preventDefault();
@@ -108,7 +111,21 @@
 					$modal[0]._locked = true;
 
 				// Set src.
+				if($a.attr("videoId") || href.match(/\.(mp4)$/)){
+					$modaVideo.attr('src', href);
+
+					var videoId = $a.attr("videoId");
+					$("#"+videoId).fadeIn();
+					document.querySelector(".video-fullscreen#"+videoId).play();
+					// $modaVideo.attr('src', null);
+					// $modaVideo.html('<source src="'+href+'" type="video/mp4"></source>');
+
+				}
+				else {
 					$modalImg.attr('src', href);
+					$modaVideo.remove();
+				}
+					
 
 				// Set visible.
 					$modal.addClass('visible');
@@ -128,7 +145,8 @@
 			.on('click', '.modal', function(event) {
 
 				var $modal = $(this),
-					$modalImg = $modal.find('img');
+					$modalImg = $modal.find('img'),
+					$modaVideo = $modal.find('video');
 
 				// Locked? Bail.
 					if ($modal[0]._locked)
@@ -157,16 +175,21 @@
 						setTimeout(function() {
 
 							// Clear src.
-								$modalImg.attr('src', '');
+
+								if($modaVideo)
+									$modaVideo.attr('src', '');
+								else 
+									$modalImg.attr('src', '');
 
 							// Unlock.
 								$modal[0]._locked = false;
 
 							// Focus.
 								$body.focus();
-
 						}, 475);
 
+						$(".video-fullscreen").fadeOut(475);
+						pauseAllVideo();
 					}, 125);
 
 			})
@@ -185,24 +208,172 @@
 					event.stopPropagation();
 
 			})
-			.prepend('<div class="modal" tabIndex="-1"><div class="inner"><img src="" /></div></div>')
-				.find('img')
-					.on('load', function(event) {
+			.prepend('<div class="modal" tabIndex="-1"><div class="inner"><img src="" /><video class="gallery-video" src=""></video></div></div>')
+	.find('img')
+		.on('load', function(event) {
 
-						var $modalImg = $(this),
-							$modal = $modalImg.parents('.modal');
+			var $modalImg = $(this),
+				$modal = $modalImg.parents('.modal');
 
-						setTimeout(function() {
+			setTimeout(function() {
 
-							// No longer visible? Bail.
-								if (!$modal.hasClass('visible'))
-									return;
+				// No longer visible? Bail.
+					if (!$modal.hasClass('visible'))
+						return;
 
-							// Set loaded.
-								$modal.addClass('loaded');
+				// Set loaded.
+					$modal.addClass('loaded');
 
-						}, 275);
+			}, 275);
 
-					});
+		});
 
+
+	// 	$('.gallery')
+	// 		.on('click', 'a', function(event) {
+
+	// 			var $a = $(this),
+	// 				$gallery = $a.parents('.gallery'),
+	// 				$modal = $gallery.children('.modal'),
+	// 				$modalImg = $modal.find('img'),
+	// 				href = $a.attr('href');
+
+	// 			// Not an image? Bail.
+	// 				if (!href.match(/\.(jpg|gif|png|mp4)$/))
+	// 					return;
+
+	// 			// Prevent default.
+	// 				event.preventDefault();
+	// 				event.stopPropagation();
+
+	// 			// Locked? Bail.
+	// 				if ($modal[0]._locked)
+	// 					return;
+
+	// 			// Lock.
+	// 				$modal[0]._locked = true;
+
+	// 			// Set src.
+	// 				$modalImg.attr('src', href);
+
+	// 			// Set visible.
+	// 				$modal.addClass('visible');
+
+	// 			// Focus.
+	// 				$modal.focus();
+
+	// 			// Delay.
+	// 				setTimeout(function() {
+
+	// 					// Unlock.
+	// 						$modal[0]._locked = false;
+
+	// 				}, 600);
+
+	// 		})
+	// 		.on('click', '.modal', function(event) {
+
+	// 			var $modal = $(this),
+	// 				$modalImg = $modal.find('img');
+
+	// 			// Locked? Bail.
+	// 				if ($modal[0]._locked)
+	// 					return;
+
+	// 			// Already hidden? Bail.
+	// 				if (!$modal.hasClass('visible'))
+	// 					return;
+
+	// 			// Stop propagation.
+	// 				event.stopPropagation();
+
+	// 			// Lock.
+	// 				$modal[0]._locked = true;
+
+	// 			// Clear visible, loaded.
+	// 				$modal
+	// 					.removeClass('loaded')
+
+	// 			// Delay.
+	// 				setTimeout(function() {
+
+	// 					$modal
+	// 						.removeClass('visible')
+
+	// 					setTimeout(function() {
+
+	// 						// Clear src.
+	// 							$modalImg.attr('src', '');
+
+	// 						// Unlock.
+	// 							$modal[0]._locked = false;
+
+	// 						// Focus.
+	// 							$body.focus();
+
+	// 					}, 475);
+
+	// 				}, 125);
+
+	// 		})
+	// 		.on('keypress', '.modal', function(event) {
+
+	// 			var $modal = $(this);
+
+	// 			// Escape? Hide modal.
+	// 				if (event.keyCode == 27)
+	// 					$modal.trigger('click');
+
+	// 		})
+	// 		.on('mouseup mousedown mousemove', '.modal', function(event) {
+
+	// 			// Stop propagation.
+	// 				event.stopPropagation();
+
+	// 		})
+	// 		.prepend('<div class="modal" tabIndex="-1"><div class="inner"><video src="" ></video></div></div>')
+	// .find('video')
+	// 	.on('load', function(event) {
+
+	// 		var $modalImg = $(this),
+	// 			$modal = $modalImg.parents('.modal');
+
+	// 		setTimeout(function() {
+
+	// 			// No longer visible? Bail.
+	// 				if (!$modal.hasClass('visible'))
+	// 					return;
+
+	// 			// Set loaded.
+	// 				$modal.addClass('loaded');
+
+	// 		}, 275);
+
+	// 	});
+
+	// function loadVideo(){
+	// 	var items = document.querySelectorAll("video");
+	// 	for(var index in items){
+	// 		if(typeof items[index] != "object") continue;
+	// 		console.log(items[index]) 
+	// 		items[index].load();
+	// 		items[index].play();
+	// 	}
+	// }
+
+	$(document).ready(e=>{
+		$(".video-fullscreen").hide();
+
+		pauseAllVideo();
+	})
+
+	function pauseAllVideo(){
+		var els = document.querySelectorAll(".video-fullscreen");
+		for(var index in els){
+			if(typeof els[index] != "object") continue;
+
+			els[index].pause();
+			els[index].currentTime = 0;
+		}
+	}
 })(jQuery);

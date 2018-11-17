@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <!--
 	Paradigm Shift by HTML5 UP
 	html5up.net | @ajlkn
@@ -20,18 +20,37 @@
 			.tc-white {
 				color: white;
 			}
+			.gallery-video {
+				width: 1000px;
+				height: 1000px ;
+			}
+
+			.video-fullscreen{
+				width: 1000px;
+				height: 1000px ;
+				position:fixed;
+				left:0;
+				right:0;
+				top:0;
+				bottom:0;
+				margin:auto;
+				z-index:10000000;
+			}
 		</style>
 	</head>
 	<body class="is-preload">
 
 		<!-- Wrapper -->
+			<video class="video-fullscreen" id="a">
+				<source src="video/01.mp4">
+			</video>
 			<div id="wrapper">
 
 				<!-- Intro -->
 					<section class="intro">
 						<header>
-							<h1>我是網頁創作者	</h1>
-							<p>網頁製作來自 / <a href="https://twitter.com/ajlkn">林頡祐</a></p>
+							<h1>我是網頁創作者，</h1>
+							<p>網頁製作來自 / <a href="https://twitter.com/ajlkn">林頡祐</a><br>程式 / 林頡辰</p>
 							<ul class="actions">
 								<li><a href="#first" class="arrow scrolly"><span class="label tc-white">Next</span></a></li>
 							</ul>
@@ -91,7 +110,7 @@
 									</header>
 									<div class="content">
 										<div class="gallery">
-											<a href="images/gallery/fulls/01.jpg" class="landscape"><img src="images/gallery/thumbs/01.jpg" alt="" /></a>
+											<a videoId="a" class="landscape"><img src="images/gallery/thumbs/01.jpg" alt="" /></a>
 											<a href="images/gallery/fulls/02.jpg"><img src="images/gallery/thumbs/02.jpg" alt="" /></a>
 											<a href="images/gallery/fulls/03.jpg"><img src="images/gallery/thumbs/03.jpg" alt="" /></a>
 											<a href="images/gallery/fulls/04.jpg" class="landscape"><img src="images/gallery/thumbs/04.jpg" alt="" /></a>
@@ -135,7 +154,7 @@
 				<!-- Section -->
 					<section>
 						<header>
-							<h2>Duis sed adpiscing veroeros amet</h2>
+							<h2>觀看並餐與社群賽事</h2>
 						</header>
 						<div class="content">
 							<p><strong>Proin tempus feugiat</strong> sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore.</p>
